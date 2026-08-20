@@ -5,10 +5,21 @@
     "strings": "off",
     "other": "off"
   },
-  "editor.suggestOnTriggerCharacters": false,
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.parameterHints.enabled": true,
+  "editor.suggest.showMethods": true,
+  "editor.suggest.showFunctions": true,
+  "editor.suggest.showProperties": true,
+  "editor.suggest.showFields": true,
+  "javascript.suggest.enabled": true,
   "editor.tabCompletion": "off",
   "editor.wordBasedSuggestions": "off",
   "editor.acceptSuggestionOnEnter": "off",
+  "git.enabled": true,
+  "git.decorations.enabled": true,
+  "scm.diffDecorations": "all",
+  "explorer.decorations.badges": true,
+  "explorer.decorations.colors": true,
   "github.copilot.enable": {
     "*": false
   }

@@ -17,12 +17,12 @@ model User {
   email String  @unique
   name  String?
   posts Post[]
-  verified String
-  role String 
+  verified String @default("FALSE")
+  role String @default("USER")
   comments Comment[]
   pwd String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 } 
 model Post { 
   id        Int     @id @default(autoincrement()) 
@@ -31,12 +31,12 @@ model Post {
   published Boolean @default(false) 
   author    User    @relation(fields: [authorId], references: [id]) 
   authorId  Int
-  status String
+  status String @default("private")
   comments Comment[]
   media String[] @default([])
   topics String[] @default([])
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 } 
 
 model Comment {
@@ -46,6 +46,6 @@ model Comment {
   parent Post @relation(fields: [postId], references: [id])
   authorId Int 
   postId Int
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
