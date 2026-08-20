@@ -5,15 +5,16 @@ import {
   updatePost,
   createPost,
   deletePost,
+  getPostComments
 } from "../controllers/post.js";
 
 const router = Router();
 
 router.use(express.json());
 
-router.get("/", getAllPosts);
+router.get("/:postId/comments", getPostComments)
 router.get("/:postId", getOnePost);
-
+router.get("/", getAllPosts);
 router.post("/", createPost);
 
 router.put("/:postId", updatePost);

@@ -28,6 +28,32 @@ async function getOneUser(req,res,next){
     }
 }
 
+async function getUserComments(req, res, next) {
+  const { userId } = req.params;
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { authorId:userId },
+    });
+   
+    return res.json({ data: comments });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getUserPosts(req, res, next) {
+  const { userId } = req.params;
+  try {
+    const posts = await prisma.post.findMany({
+      where: { authorId:userId },
+    });
+   
+    return res.json({ data: posts });
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 // Helper Check User function
 
@@ -92,4 +118,4 @@ async function deleteUser(req,res,next){
    }
 }
 
-export {getAllUsers, getOneUser, updateUser, deleteUser}
+export {getAllUsers, getOneUser, updateUser, deleteUser, getUserComments, getUserPosts}

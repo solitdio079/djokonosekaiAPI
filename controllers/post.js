@@ -14,6 +14,7 @@ async function getOnePost(req, res, next) {
   try {
     const post = await prisma.post.findUnique({
       where: { id: postId },
+      include:{comments:true}
     });
     if (!post) return res.json({ message: "Post not found!" });
     return res.json({ data: post });
@@ -22,15 +23,25 @@ async function getOnePost(req, res, next) {
   }
 }
 
+async function getPostComments(req, res, next) {
+  const { postId } = req.params;
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { postId },
+    });
+   
+    return res.json({ data: comments });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function createPost(req, res, next) {
   // Data on req.body after validation
-  const { title, content, authorId, media, topicString } = req.body;
+  const { title, content, media, topicString } = req.body;
   const topics = topicString.split(",");
 
-  // Check if the authorId matches the current user
-  if (authorId !== req.user.id) {
-    return res.json({ message: "User id does matched! authorId" });
-  }
+  const authorId = req.user.id
 
   try {
     const post = await prisma.post.create({
@@ -66,7 +77,8 @@ async function updatePost(req, res, next) {
   const checkPost = await checkIfPostExists(postId, res);
 
   // Data on req.body after validation
-  const { title, content, authorId, media, topicString } = req.body;
+  const { title, content, media, topicString } = req.body;
+  const authorId = req.user.id
   const topics = topicString.split(",");
   try {
     const post = await prisma.post.update({
@@ -99,4 +111,5 @@ async function deletePost(req, res, next) {
   }
 }
 
-export {getAllPosts,getOnePost,createPost,updatePost, deletePost};
+
+export {getAllPosts,getOnePost,createPost,updatePost, deletePost, getPostComments};
