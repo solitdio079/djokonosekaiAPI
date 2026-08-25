@@ -12,17 +12,22 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User { 
   id    Int     @id @default(autoincrement()) 
   email String  @unique
   name  String?
   posts Post[]
-  verified String @default("FALSE")
-  role String @default("USER")
+  verified Boolean @default(false)
+  role Role @default(USER)
   comments Comment[]
-  pwd String
+  pwd String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
 } 
 model Post { 
   id        Int     @id @default(autoincrement()) 
@@ -36,7 +41,7 @@ model Post {
   media String[] @default([])
   topics String[] @default([])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
 } 
 
 model Comment {
@@ -47,5 +52,5 @@ model Comment {
   authorId Int 
   postId Int
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
 }

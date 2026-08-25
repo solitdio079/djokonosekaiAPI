@@ -1,15 +1,17 @@
 import "dotenv/config"
-
+import passport from "passport"
 import express from "express"
-
 import routes from "./routes/index.js"
+import "./utils/passportJwt.js"
 
 const app = express()
 
-app.use("/users", routes.user)
-app.use("/posts", routes.post)
-app.use("/comments", routes.comment)
 
+app.use("/auth", routes.auth)
+app.use("/posts", routes.post)
+app.use(passport.authenticate('jwt',{session:false}))
+app.use("/comments", routes.comment)
+app.use("/users", routes.user)
 
 app.get("/", (req,res)=> {
     return res.json({

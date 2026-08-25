@@ -1,5 +1,7 @@
 import { prisma } from "../lib/prisma.js";
 
+
+
 async function getAllPosts(req, res, next) {
   try {
     const posts = await prisma.post.findMany();

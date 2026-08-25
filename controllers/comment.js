@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.js";
-
+import checkIfAuthor from "../utils/authorCheck.js"
 async function createComment(req, res, next) {
   // Data after validation succeeded
   const { content, postId } = req.body;
@@ -29,7 +29,7 @@ async function checkIfCommentExists(commentId, res) {
       where: { id: commentId },
     });
     if (!checkComment) return res.json({ message: "Post not found!" });
-    return checkPost;
+    return checkComment;
   } catch (err) {
     throw err;
   }
@@ -39,6 +39,8 @@ async function updateComment(req, res, next) {
   const { commentId } = req.params;
 
   const checkComment = await checkIfCommentExists(commentId, res);
+
+  if(!checkIfAuthor(checkComment.authorId, req.user.id)) return res.status(403).json({error: "You are not the author"})
 
   const { content, postId } = req.body;
   const authorId = req.user.id;
@@ -62,6 +64,9 @@ async function deleteComment(req,res,next){
 
   const checkComment = await checkIfCommentExists(commentId, res);
 
+  // CHECK iF this is the author
+  if(!checkIfAuthor(checkComment.authorId, req.user.id)) return res.status(403).json({error: "You are not the author"})
+
   try{
     const deletedComment = await prisma.comment.delete({
         where:{id:commentId}
@@ -71,5 +76,6 @@ async function deleteComment(req,res,next){
     next(err)
   }
 }
+
 
 export {createComment, updateComment,deleteComment};
