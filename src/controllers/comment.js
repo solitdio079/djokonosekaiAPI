@@ -1,5 +1,5 @@
-import { prisma } from "../src/lib/prisma.js";
-import checkIfAuthor from "../src/utils/authorCheck.js"
+import { prisma } from "../lib/prisma.js";
+import checkIfAuthor from "../utils/authorCheck.js"
 async function createComment(req, res, next) {
   // Data after validation succeeded
   const { content, postId } = req.body;

@@ -1,5 +1,5 @@
-import { prisma } from "../src/lib/prisma.js";
-import { hashPassword } from "../src/utils/password.js";
+import { prisma } from "../lib/prisma.js";
+import { hashPassword } from "../utils/password.js";
 
 async function getAllUsers(req, res, next) {
   try {

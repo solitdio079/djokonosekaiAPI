@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import verifyIfAdmin from "../../utils/verifyIfAdmin.js"
+import verifyIfAdmin from "../utils/verifyIfAdmin.js"
 import {
   getAllUsers,
   getOneUser,
@@ -8,7 +8,7 @@ import {
   getUserComments,
   getUserPosts,
   updateRole
-} from "../../controllers/user.js";
+} from "../controllers/user.js";
 
 const router = Router();
 

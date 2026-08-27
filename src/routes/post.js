@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import passport from "passport"
-import verifyIfAdmin from "../../utils/verifyIfAdmin.js"
+import verifyIfAdmin from "../utils/verifyIfAdmin.js"
 import {
   getAllPosts,
   getOnePost,
@@ -8,9 +8,9 @@ import {
   createPost,
   deletePost,
   getPostComments
-} from "../../controllers/post.js";
+} from "../controllers/post.js";
 
-import "../../utils/passportJwt.js"
+import "../utils/passportJwt.js"
 
 const router = Router();
 

@@ -1,7 +1,7 @@
-import "../../utils/passportLocal.js"
+import "../utils/passportLocal.js"
 import express, {Router} from "express"
 import passport from "passport"
-import {sendUserToken, signUpUser} from "../../controllers/auth.js"
+import {sendUserToken, signUpUser} from "../controllers/auth.js"
 const router = Router()
 router.use(express.json())
 

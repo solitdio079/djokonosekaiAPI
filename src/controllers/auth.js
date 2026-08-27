@@ -1,8 +1,8 @@
 import "dotenv/config";
-import { prisma } from "../src/lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 import { promisify } from "node:util";
-import { hashPassword } from "../src/utils/password.js";
+import { hashPassword } from "../utils/password.js";
 
 const promisedSign = promisify(jwt.sign);
 async function sendUserToken(req, res, next) {
