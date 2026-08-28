@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -25,7 +25,7 @@ model User {
   verified  Boolean   @default(false)
   role      Role      @default(USER)
   comments  Comment[]
-  pwd       String?
+  pwd       String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }

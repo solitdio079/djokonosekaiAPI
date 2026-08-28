@@ -1352,7 +1352,7 @@ export namespace Prisma {
     name: string | null
     verified: boolean
     role: $Enums.Role
-    pwd: string | null
+    pwd: string
     createdAt: Date
     updatedAt: Date | null
     _count: UserCountAggregateOutputType | null
@@ -1444,7 +1444,7 @@ export namespace Prisma {
       name: string | null
       verified: boolean
       role: $Enums.Role
-      pwd: string | null
+      pwd: string
       createdAt: Date
       updatedAt: Date | null
     }, ExtArgs["result"]["user"]>
@@ -4827,7 +4827,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     verified?: BoolFilter<"User"> | boolean
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    pwd?: StringNullableFilter<"User"> | string | null
+    pwd?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     posts?: PostListRelationFilter
@@ -4840,7 +4840,7 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     verified?: SortOrder
     role?: SortOrder
-    pwd?: SortOrderInput | SortOrder
+    pwd?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
     posts?: PostOrderByRelationAggregateInput
@@ -4856,7 +4856,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     verified?: BoolFilter<"User"> | boolean
     role?: EnumRoleFilter<"User"> | $Enums.Role
-    pwd?: StringNullableFilter<"User"> | string | null
+    pwd?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     posts?: PostListRelationFilter
@@ -4869,7 +4869,7 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     verified?: SortOrder
     role?: SortOrder
-    pwd?: SortOrderInput | SortOrder
+    pwd?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -4888,7 +4888,7 @@ export namespace Prisma {
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     verified?: BoolWithAggregatesFilter<"User"> | boolean
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
-    pwd?: StringNullableWithAggregatesFilter<"User"> | string | null
+    pwd?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
@@ -5048,7 +5048,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
     posts?: PostCreateNestedManyWithoutAuthorInput
@@ -5061,7 +5061,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -5073,7 +5073,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     posts?: PostUpdateManyWithoutAuthorNestedInput
@@ -5086,7 +5086,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -5099,7 +5099,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
   }
@@ -5109,7 +5109,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -5120,7 +5120,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -6149,7 +6149,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
     comments?: CommentCreateNestedManyWithoutAuthorInput
@@ -6161,7 +6161,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
     comments?: CommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -6213,7 +6213,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: CommentUpdateManyWithoutAuthorNestedInput
@@ -6225,7 +6225,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
@@ -6252,7 +6252,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
     posts?: PostCreateNestedManyWithoutAuthorInput
@@ -6264,7 +6264,7 @@ export namespace Prisma {
     name?: string | null
     verified?: boolean
     role?: $Enums.Role
-    pwd?: string | null
+    pwd: string
     createdAt?: Date | string
     updatedAt?: Date | string | null
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -6321,7 +6321,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     posts?: PostUpdateManyWithoutAuthorNestedInput
@@ -6333,7 +6333,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    pwd?: NullableStringFieldUpdateOperationsInput | string | null
+    pwd?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput

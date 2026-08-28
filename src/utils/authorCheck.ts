@@ -1,4 +1,4 @@
-function checkIfAuthor(id, userId){
+function checkIfAuthor(id:number, userId:number):boolean{
     if(id !== userId) return false
     return true
 }

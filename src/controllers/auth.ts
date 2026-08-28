@@ -1,22 +1,21 @@
 import "dotenv/config";
+import {type Request, type Response, type NextFunction} from "express"
 import { prisma } from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
-import { promisify } from "node:util";
 import { hashPassword } from "../utils/password.js";
 
-const promisedSign = promisify(jwt.sign);
-async function sendUserToken(req, res, next) {
+
+
+async function sendUserToken(req:Request, res:Response, next:NextFunction) {
   if (!req.user) return res.status(401).json({ error: "User not logged in!" });
   const userData = {
-    id: req.user.id,
-    role: req.user.role,
-    verified: req.user.verified,
+    id: req.user.id
   };
 
   try {
     const secretKey = process.env.SECRET_KEY;
-    if (!secretKey) return res.status(500).json({ error: "Unexpected error!" });
-    const token = await promisedSign(userData, secretKey, {
+    if(!secretKey) return res.status(500).json({error: "No secret provided"}) 
+    const token = jwt.sign(userData, secretKey, {
       expiresIn: "6h",
       algorithm: "HS256",
     });
@@ -26,7 +25,14 @@ async function sendUserToken(req, res, next) {
   }
 }
 
-async function signUpUser(req, res, next) {
+interface userBody{
+  email:string,
+  password:string,
+  name:string,
+  confirmPassword:string
+}
+
+async function signUpUser(req:Request<Record<string, never>, unknown, userBody>, res:Response, next:NextFunction) {
   try {
     // these are already validated fields: validation middleware will come before this
     const { email, password, name, confirmPassword } = req.body;
