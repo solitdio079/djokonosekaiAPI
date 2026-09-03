@@ -7,7 +7,8 @@ import {
   updatePost,
   createPost,
   deletePost,
-  getPostComments
+  getPostComments,
+  validatePost
 } from "../controllers/post.js";
 
 import "../utils/passportJwt.js"
@@ -21,9 +22,9 @@ router.get("/:postId", getOnePost);
 
 router.use(passport.authenticate('jwt', {session:false}))
 router.get("/", verifyIfAdmin,getAllPosts);
-router.post("/", verifyIfAdmin, createPost);
+router.post("/", verifyIfAdmin, validatePost, createPost);
 
-router.put("/:postId", verifyIfAdmin,updatePost);
+router.put("/:postId", verifyIfAdmin, validatePost,updatePost);
 
 router.delete("/:postId", verifyIfAdmin,deletePost);
 

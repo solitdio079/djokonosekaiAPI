@@ -3,6 +3,8 @@ import checkIfAuthor from "../utils/authorCheck.js";
 
 import { type Request, type Response, type NextFunction } from "express";
 
+import {CommentValidator} from "../validation/validators.js"
+
 interface commentParams {
   commentId: string;
 }
@@ -17,6 +19,22 @@ interface Comment {
 interface commentBody {
   content: string;
   postId: number;
+}
+
+function validateComment(
+  req: Request<any, any, commentBody>,
+  res: Response,
+  next: NextFunction,
+){
+  const result  = CommentValidator.safeParse(req.body)
+
+  if(!result.success){
+    next(result.error)
+  }else{
+    req.body = result.data
+    next()
+  }
+
 }
 async function createComment(
   req: Request<any, any, commentBody>,
@@ -121,4 +139,4 @@ async function deleteComment(
   }
 }
 
-export { createComment, updateComment, deleteComment };
+export { createComment, updateComment, deleteComment,validateComment };

@@ -1,20 +1,21 @@
 import "dotenv/config";
-import {type Request, type Response, type NextFunction} from "express"
+import { type Request, type Response, type NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 import { hashPassword } from "../utils/password.js";
+import * as z from "zod";
+import { UserValidator } from "../validation/validators.js";
 
-
-
-async function sendUserToken(req:Request, res:Response, next:NextFunction) {
+async function sendUserToken(req: Request, res: Response, next: NextFunction) {
   if (!req.user) return res.status(401).json({ error: "User not logged in!" });
   const userData = {
-    id: req.user.id
+    id: req.user.id,
   };
 
   try {
     const secretKey = process.env.SECRET_KEY;
-    if(!secretKey) return res.status(500).json({error: "No secret provided"}) 
+    if (!secretKey)
+      return res.status(500).json({ error: "No secret provided" });
     const token = jwt.sign(userData, secretKey, {
       expiresIn: "6h",
       algorithm: "HS256",
@@ -25,14 +26,32 @@ async function sendUserToken(req:Request, res:Response, next:NextFunction) {
   }
 }
 
-interface userBody{
-  email:string,
-  password:string,
-  name:string,
-  confirmPassword:string
+interface userBody {
+  email: string;
+  password: string;
+  name: string;
+  confirmPassword: string;
 }
 
-async function signUpUser(req:Request<Record<string, never>, unknown, userBody>, res:Response, next:NextFunction) {
+function validateUser(
+  req: Request<Record<string, never>, unknown, userBody>,
+  res: Response,
+  next: NextFunction,
+) {
+  const result = UserValidator.safeParse(req.body);
+  if (!result.success) {
+    next(result.error) // ZodError instance
+  } else {
+    req.body = result.data; // { username: string; xp: number }
+    next()
+  }
+}
+
+async function signUpUser(
+  req: Request<Record<string, never>, unknown, userBody>,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     // these are already validated fields: validation middleware will come before this
     const { email, password, name, confirmPassword } = req.body;
@@ -42,7 +61,7 @@ async function signUpUser(req:Request<Record<string, never>, unknown, userBody>,
 
     // check if email exists
     const userByEmail = await prisma.user.findUnique({
-      where: { email:email.toLowerCase() },
+      where: { email: email.toLowerCase() },
     });
     if (userByEmail)
       return res.status(409).json({ error: "Email already exists!" });
@@ -63,4 +82,4 @@ async function signUpUser(req:Request<Record<string, never>, unknown, userBody>,
   }
 }
 
-export { sendUserToken, signUpUser };
+export { sendUserToken, signUpUser, validateUser };

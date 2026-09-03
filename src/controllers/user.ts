@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.js";
 import { hashPassword } from "../utils/password.js";
 import { type Request, type Response, type NextFunction } from "express";
 import { Role } from "../generated/prisma/index.js";
+import {UserUpdateValidator, UserRoleValidator} from "../validation/validators.js"
 interface userParams {
   userId: string;
 }
@@ -96,6 +97,27 @@ async function checkIfUserExists(
 }
 
 // createUser is handled in my authentication flow already
+function validateUpdateUserData(
+  req: Request<
+    userParams,
+    any,
+    { email?: string; name?: string; password?: string }
+  >,
+  res: Response,
+  next: NextFunction,
+){
+  const result  = UserUpdateValidator.safeParse(req.body)
+
+  if(!result.success){
+    return next(result.error)
+  }else{
+    req.body = result.data
+    return next()
+  }
+  
+}
+
+
 
 async function updateUser(
   req: Request<
@@ -151,6 +173,27 @@ async function updateUser(
     next(err);
   }
 }
+
+function validateUserRole(
+  req: Request<
+    userParams,
+    any,
+    { role: Role }
+  >,
+  res: Response,
+  next: NextFunction,
+){
+  const result  = UserRoleValidator.safeParse(req.body)
+
+  if(!result.success){
+    return next(result.error)
+  }else{
+    req.body = result.data
+    return next()
+  }
+  
+}
+
 
 async function updateRole(
   req: Request<userParams, any, { role: Role }>,
@@ -221,4 +264,6 @@ export {
   getUserComments,
   getUserPosts,
   updateRole,
+  validateUpdateUserData,
+  validateUserRole
 };

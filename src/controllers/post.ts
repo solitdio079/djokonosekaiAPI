@@ -3,6 +3,8 @@ import { prisma } from "../lib/prisma.js";
 import { type Request, type Response, type NextFunction } from "express";
 import { Role } from "../generated/prisma/index.js";
 
+import {PostValidator} from "../validation/validators.js"
+
 interface Post {
   id: number;
   title: string;
@@ -67,6 +69,25 @@ async function getPostComments(
     return res.json({ data: comments });
   } catch (err) {
     next(err);
+  }
+}
+
+ function validatePost(
+  req: Request<
+    postParams,
+    any,
+    postBody
+  >,
+  res: Response,
+  next: NextFunction,
+) {
+  const result  = PostValidator.safeParse(req.body)
+
+  if(!result.success){
+    next(result.error)
+  }else{
+    req.body = result.data
+    next()
   }
 }
 
@@ -179,4 +200,5 @@ export {
   updatePost,
   deletePost,
   getPostComments,
+  validatePost
 };

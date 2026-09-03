@@ -7,7 +7,9 @@ import {
   deleteUser,
   getUserComments,
   getUserPosts,
-  updateRole
+  updateRole,
+  validateUpdateUserData,
+  validateUserRole
 } from "../controllers/user.js";
 
 const router = Router();
@@ -22,8 +24,8 @@ router.get("/:userId/posts", getUserPosts)
 
 router.get("/:userId", getOneUser);
 router.get("/", verifyIfAdmin,getAllUsers);
-router.put("/:userId", updateUser);
-router.put("/role/:userId", verifyIfAdmin,updateRole);
+router.put("/:userId", validateUpdateUserData,updateUser);
+router.put("/role/:userId", validateUserRole,verifyIfAdmin,updateRole);
 
 router.delete("/:userId", verifyIfAdmin,deleteUser);
 
