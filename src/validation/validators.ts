@@ -15,6 +15,12 @@ const UserUpdateValidator = z.object({
 
 })
 
+const UserUpdatePassword = z.object({
+    token: z.string("Please enter a valid token"),
+    password: z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,}$/,{error: `Password must have at least 8 characters one lowercase letter, one uppercase letter, one number, one special character, and no spaces.`}),
+    confirmPassword: z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,}$/)
+})
+
 const UserRoleValidator = z.object({
     role: z.enum(Role)
 })
@@ -36,4 +42,4 @@ const CommentValidator = z.object({
 
 })
 
-export {CommentValidator, PostValidator, UserValidator,UserUpdateValidator,UserRoleValidator, PostStatusValidator}
+export {CommentValidator, PostValidator, UserValidator,UserUpdateValidator,UserRoleValidator, PostStatusValidator, UserUpdatePassword}

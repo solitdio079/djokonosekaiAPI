@@ -2,10 +2,11 @@ import { prisma } from "../lib/prisma.js";
 import { hashPassword } from "../utils/password.js";
 import { type Request, type Response, type NextFunction } from "express";
 import { Role } from "../generated/prisma/index.js";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import {
   UserUpdateValidator,
   UserRoleValidator,
+  UserUpdatePassword,
 } from "../validation/validators.js";
 
 import createToken from "../utils/createToken.js";
@@ -230,6 +231,65 @@ async function updateRole(
   }
 }
 
+function validateUpdateUserPassword(
+  req: Request<
+    userParams,
+    any,
+    { token: string; password: string; confirmPassword?: string }
+  >,
+  res: Response,
+  next: NextFunction,
+) {
+  const result = UserUpdatePassword.safeParse(req.body);
+
+  if (!result.success) {
+    return next(result.error);
+  } else {
+    req.body = result.data;
+    return next();
+  }
+}
+
+async function updateUserPassword(
+  req: Request<
+    userParams,
+    any,
+    { token: string; password: string; confirmPassword?: string }
+  >,
+  res: Response,
+  next: NextFunction,
+) {
+  if (!req.user)
+    return res.status(401).json({ error: "You are not logged in!" })
+  if (req.user.id !== parseInt(req.params.userId))
+    return res.status(403).json({ error: "You are not allowed!" })
+
+  try{
+    const {token,password,confirmPassword} = req.body 
+    const secret = process.env.SECRET_KEY || "INVALID"
+    const decoded = jwt.verify(token, secret)
+    if(typeof decoded === "string") return res.status(403).json({error: "Bad token!"})
+    if(decoded.id !== req.user.id) return res.status(403).json({error: "Bad token!"})
+    if(password !== confirmPassword) return res.status(401).json({error: "Password do not match"})
+    
+    const hashed = await hashPassword(password)
+    await prisma.user.update({
+      where:{
+        id:req.user.id
+      },
+      data:{
+        pwd: hashed
+      }
+    })
+
+    return res.status(200).json({message:"Password set successfully!"})
+   
+
+  }catch(err){
+    next(err)
+  }
+}
+
 async function sendVerificationLink(
   req: Request<userParams>,
   res: Response,
@@ -239,23 +299,28 @@ async function sendVerificationLink(
     return res.status(401).json({ error: "You are not logged in!" });
   if (req.user.id !== parseInt(req.params.userId))
     return res.status(403).json({ error: "You are not allowed!" });
+  const {password} = req.query
   try {
     const token = createToken({ id: req.user.id }, 60 * 60);
 
     const clientDomain = process.env.CLIENT_LINK || "http://localhost:5173/";
 
-    const subject = "Email Verification for bysolitdio.com";
+    const subject = password ? "Password Reset Link": "Email Verification for bysolitdio.com";
 
-    const emailBody = `<h3>Hello ${req.user.name},</h3> 
+    const emailBody =password ? `<h3>Hello ${req.user.name},</h3> 
+                     <p>Click on the link below to reset your password.</p>
+                     <p><a href="${clientDomain}resetPassword/token=${token}">Reset Password</a></p>
+                     `
+     :  `<h3>Hello ${req.user.name},</h3> 
                      <p>Click on the link below to verify your email.</p>
                      <p><a href="${clientDomain}verifyEmail/token=${token}">Verify Email</a></p>
                      `;
-    const sender = { name: "Admin", email: "bysolitdio079@gmail.com" };
+    const sender = { name: "Djoko Keita", email: "solitdio@bysolitdio.com" };
     const receivers = [
       { email: req.user.email, name: req.user.name || "No name" },
     ];
 
-    const result = await sendEmail(subject, emailBody, sender, receivers);
+    await sendEmail(subject, emailBody, sender, receivers);
 
     return res.status(200).json({ message: "Email sent, check your email!" });
   } catch (err) {
@@ -273,29 +338,31 @@ async function verifyUserEmailVerificationToken(
   if (req.user.id !== parseInt(req.params.userId))
     return res.status(403).json({ error: "You are not allowed!" });
 
+  try {
+    const { token } = req.body;
 
-  try{
-    const {token} = req.body
+    const secret = process.env.SECRET_KEY || "INVALID";
 
-    const secret = process.env.SECRET_KEY || "INVALID"
-
-    const decoded = jwt.verify(token, secret)
-    if(typeof decoded === "string") return res.status(403).json({error: "Bad token!"})
-    if(decoded.id !== req.user.id) return res.status(403).json({error: "Bad token, user ids do not match!"})
+    const decoded = jwt.verify(token, secret);
+    if (typeof decoded === "string")
+      return res.status(403).json({ error: "Bad token!" });
+    if (decoded.id !== req.user.id)
+      return res
+        .status(403)
+        .json({ error: "Bad token, user ids do not match!" });
 
     await prisma.user.update({
       where: {
-        id: req.user.id
+        id: req.user.id,
       },
-      data:{
-        verified: true
-      }
-    })
+      data: {
+        verified: true,
+      },
+    });
 
-    return res.status(200).json({message: "Email verified successfully!"})
-
-  }catch(err){
-    next(err)
+    return res.status(200).json({ message: "Email verified successfully!" });
+  } catch (err) {
+    next(err);
   }
 }
 
@@ -334,4 +401,8 @@ export {
   validateUpdateUserData,
   validateUserRole,
   sendVerificationLink,
+  verifyUserEmailVerificationToken,
+  validateUpdateUserPassword,
+  updateUserPassword
+
 };

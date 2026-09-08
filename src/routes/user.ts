@@ -9,14 +9,16 @@ import {
   getUserPosts,
   updateRole,
   validateUpdateUserData,
-  validateUserRole
+  validateUserRole,
+  sendVerificationLink,
+  verifyUserEmailVerificationToken
 } from "../controllers/user.js";
 
 const router = Router();
 
 router.use(express.json());
 
-
+router.get("/sendEmailVerify/:userId", sendVerificationLink)
 
 router.get("/:userId/comments", getUserComments)
 
@@ -24,6 +26,7 @@ router.get("/:userId/posts", getUserPosts)
 
 router.get("/:userId", getOneUser);
 router.get("/", verifyIfAdmin,getAllUsers);
+router.post("/verifyEmail/:userId", verifyUserEmailVerificationToken)
 router.put("/:userId", validateUpdateUserData,updateUser);
 router.put("/role/:userId", validateUserRole,verifyIfAdmin,updateRole);
 
