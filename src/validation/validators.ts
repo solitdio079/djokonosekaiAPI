@@ -1,5 +1,5 @@
 import * as z from "zod"
-import {Role} from "../generated/prisma/index.js"
+import {Role,Status} from "../generated/prisma/index.js"
 
 const UserValidator = z.object({
     name: z.string().trim().min(2,"You must enter your name!").normalize(),
@@ -18,9 +18,14 @@ const UserUpdateValidator = z.object({
 const UserRoleValidator = z.object({
     role: z.enum(Role)
 })
+
+const PostStatusValidator = z.object({
+    status: z.enum(Status)
+})
 const PostValidator = z.object({
     title: z.string().min(3,{error: (iss) => `${iss.input} must have at least 3 characters!`}),
     content: z.string().normalize(),
+    status: z.enum(Status).optional(),
     mediaString: z.string().regex(/^\w+(?:,\w+)*$/,{error: (iss) => `${iss.input} must have at comma separated words.`}).optional(),
     topicString: z.string().regex(/^\w+(?:,\w+)*$/, {error: (iss) => `${iss.input} must have comma separated words!`}).optional()
 })
@@ -31,4 +36,4 @@ const CommentValidator = z.object({
 
 })
 
-export {CommentValidator, PostValidator, UserValidator,UserUpdateValidator,UserRoleValidator}
+export {CommentValidator, PostValidator, UserValidator,UserUpdateValidator,UserRoleValidator, PostStatusValidator}

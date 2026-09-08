@@ -17,6 +17,11 @@ enum Role {
   USER
 }
 
+enum Status {
+  PRIVATE
+  PUBLIC
+}
+
 model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
@@ -37,7 +42,7 @@ model Post {
   published Boolean   @default(false)
   author    User      @relation(fields: [authorId], references: [id])
   authorId  Int
-  status    String    @default("private")
+  status    Status    @default(PRIVATE)
   comments  Comment[]
   media     String[]  @default([])
   topics    String[]  @default([])

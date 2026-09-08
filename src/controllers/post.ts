@@ -1,9 +1,12 @@
 import { prisma } from "../lib/prisma.js";
 
 import { type Request, type Response, type NextFunction } from "express";
-import { Role } from "../generated/prisma/index.js";
+import { Role, Status } from "../generated/prisma/index.js";
 
-import {PostValidator} from "../validation/validators.js"
+import {
+  PostValidator,
+  PostStatusValidator,
+} from "../validation/validators.js";
 
 interface Post {
   id: number;
@@ -24,6 +27,7 @@ interface postParams {
 interface postBody {
   title: string;
   content: string;
+  status?: Status;
   mediaString?: string;
   topicString?: string;
 }
@@ -72,31 +76,38 @@ async function getPostComments(
   }
 }
 
- function validatePost(
-  req: Request<
-    postParams,
-    any,
-    postBody
-  >,
+function validatePost(
+  req: Request<postParams, any, postBody>,
   res: Response,
   next: NextFunction,
 ) {
-  const result  = PostValidator.safeParse(req.body)
+  const result = PostValidator.safeParse(req.body);
 
-  if(!result.success){
-    next(result.error)
-  }else{
-    req.body = result.data
-    next()
+  if (!result.success) {
+    next(result.error);
+  } else {
+    req.body = result.data;
+    next();
+  }
+}
+
+function validatePostStatus(
+  req: Request<postParams, any, { status: Status }>,
+  res: Response,
+  next: NextFunction,
+) {
+  const result = PostStatusValidator.safeParse(req.body);
+
+  if (!result.success) {
+    next(result.error);
+  } else {
+    req.body = result.data;
+    next();
   }
 }
 
 async function createPost(
-  req: Request<
-    postParams,
-    any,
-    postBody
-  >,
+  req: Request<postParams, any, postBody>,
   res: Response,
   next: NextFunction,
 ) {
@@ -105,9 +116,9 @@ async function createPost(
       .status(403)
       .json({ error: "You are not allowed to do this action!" });
   // Data on req.body after validation
-  const { title, content, mediaString, topicString } = req.body;
-  const topics = topicString ? topicString.split(","):[];
-  const media =mediaString ? mediaString.split(","): [];
+  const { title, content, mediaString, topicString, status } = req.body;
+  const topics = topicString ? topicString.split(",") : [];
+  const media = mediaString ? mediaString.split(",") : [];
 
   const authorId = req.user.id;
 
@@ -115,6 +126,7 @@ async function createPost(
     const post = await prisma.post.create({
       data: {
         title,
+        status: status || Status.PRIVATE,
         content,
         authorId,
         media,
@@ -139,8 +151,29 @@ async function checkIfPostExists(postId: number): Promise<boolean | Post> {
   }
 }
 
+async function updateStatus(
+  req: Request<postParams, any, { status: Status }>,
+  res: Response,
+  next: NextFunction,
+) {
+  const { postId } = req.params;
+  const { status } = req.body;
+  try {
+    await prisma.post.update({
+      where: {
+        id: parseInt(postId),
+      },
+      data: {
+        status: status,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function updatePost(
-  req: Request<postParams,any, postBody>,
+  req: Request<postParams, any, postBody>,
   res: Response,
   next: NextFunction,
 ) {
@@ -156,10 +189,10 @@ async function updatePost(
     return res.status(404).json({ error: "This post was not found" });
 
   // Data on req.body after validation
-  const { title, content, mediaString, topicString } = req.body;
+  const { title, content, mediaString, topicString, status } = req.body;
   const authorId = req.user.id;
-  const topics = topicString ? topicString.split(","):undefined
-  const media = mediaString ? mediaString.split(","): undefined 
+  const topics = topicString ? topicString.split(",") : undefined;
+  const media = mediaString ? mediaString.split(",") : undefined;
   try {
     const post = await prisma.post.update({
       where: { id: parseInt(postId) },
@@ -168,6 +201,7 @@ async function updatePost(
         content: content || checkPost.content,
         authorId: authorId || checkPost.authorId,
         media: media || checkPost.media,
+        status: status,
         topics: topics || checkPost.topics,
       },
     });
@@ -177,11 +211,16 @@ async function updatePost(
   }
 }
 
-async function deletePost(req:Request<postParams>, res:Response, next:NextFunction) {
+async function deletePost(
+  req: Request<postParams>,
+  res: Response,
+  next: NextFunction,
+) {
   const { postId } = req.params;
   const checkPost = await checkIfPostExists(parseInt(postId));
 
-  if(typeof checkPost === 'boolean') return res.status(404).json({error: "post not found"}) 
+  if (typeof checkPost === "boolean")
+    return res.status(404).json({ error: "post not found" });
 
   try {
     const post = await prisma.post.delete({
@@ -200,5 +239,7 @@ export {
   updatePost,
   deletePost,
   getPostComments,
-  validatePost
+  validatePost,
+  validatePostStatus,
+  updateStatus
 };

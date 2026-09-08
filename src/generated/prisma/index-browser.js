@@ -172,6 +172,11 @@ exports.Role = exports.$Enums.Role = {
   USER: 'USER'
 };
 
+exports.Status = exports.$Enums.Status = {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Post: 'Post',

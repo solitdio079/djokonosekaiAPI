@@ -40,11 +40,23 @@ export namespace $Enums {
 
 export type Role = (typeof Role)[keyof typeof Role]
 
+
+export const Status: {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC'
+};
+
+export type Status = (typeof Status)[keyof typeof Status]
+
 }
 
 export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
+
+export type Status = $Enums.Status
+
+export const Status: typeof $Enums.Status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2367,7 +2379,7 @@ export namespace Prisma {
     content: string | null
     published: boolean | null
     authorId: number | null
-    status: string | null
+    status: $Enums.Status | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2378,7 +2390,7 @@ export namespace Prisma {
     content: string | null
     published: boolean | null
     authorId: number | null
-    status: string | null
+    status: $Enums.Status | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2536,7 +2548,7 @@ export namespace Prisma {
     content: string | null
     published: boolean
     authorId: number
-    status: string
+    status: $Enums.Status
     media: string[]
     topics: string[]
     createdAt: Date
@@ -2644,7 +2656,7 @@ export namespace Prisma {
       content: string | null
       published: boolean
       authorId: number
-      status: string
+      status: $Enums.Status
       media: string[]
       topics: string[]
       createdAt: Date
@@ -3079,7 +3091,7 @@ export namespace Prisma {
     readonly content: FieldRef<"Post", 'String'>
     readonly published: FieldRef<"Post", 'Boolean'>
     readonly authorId: FieldRef<"Post", 'Int'>
-    readonly status: FieldRef<"Post", 'String'>
+    readonly status: FieldRef<"Post", 'Status'>
     readonly media: FieldRef<"Post", 'String[]'>
     readonly topics: FieldRef<"Post", 'String[]'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
@@ -4802,6 +4814,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Status'
+   */
+  export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
+    
+
+
+  /**
+   * Reference to a field of type 'Status[]'
+   */
+  export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -4902,7 +4928,7 @@ export namespace Prisma {
     content?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
     authorId?: IntFilter<"Post"> | number
-    status?: StringFilter<"Post"> | string
+    status?: EnumStatusFilter<"Post"> | $Enums.Status
     media?: StringNullableListFilter<"Post">
     topics?: StringNullableListFilter<"Post">
     createdAt?: DateTimeFilter<"Post"> | Date | string
@@ -4935,7 +4961,7 @@ export namespace Prisma {
     content?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
     authorId?: IntFilter<"Post"> | number
-    status?: StringFilter<"Post"> | string
+    status?: EnumStatusFilter<"Post"> | $Enums.Status
     media?: StringNullableListFilter<"Post">
     topics?: StringNullableListFilter<"Post">
     createdAt?: DateTimeFilter<"Post"> | Date | string
@@ -4971,7 +4997,7 @@ export namespace Prisma {
     content?: StringNullableWithAggregatesFilter<"Post"> | string | null
     published?: BoolWithAggregatesFilter<"Post"> | boolean
     authorId?: IntWithAggregatesFilter<"Post"> | number
-    status?: StringWithAggregatesFilter<"Post"> | string
+    status?: EnumStatusWithAggregatesFilter<"Post"> | $Enums.Status
     media?: StringNullableListFilter<"Post">
     topics?: StringNullableListFilter<"Post">
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
@@ -5129,7 +5155,7 @@ export namespace Prisma {
     title: string
     content?: string | null
     published?: boolean
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -5144,7 +5170,7 @@ export namespace Prisma {
     content?: string | null
     published?: boolean
     authorId: number
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -5156,7 +5182,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5171,7 +5197,7 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     authorId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5185,7 +5211,7 @@ export namespace Prisma {
     content?: string | null
     published?: boolean
     authorId: number
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -5196,7 +5222,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5209,7 +5235,7 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     authorId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5513,6 +5539,13 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type EnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -5569,6 +5602,16 @@ export namespace Prisma {
   export type PostSumOrderByAggregateInput = {
     id?: SortOrder
     authorId?: SortOrder
+  }
+
+  export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
   export type PostScalarRelationFilter = {
@@ -5757,6 +5800,10 @@ export namespace Prisma {
     connectOrCreate?: CommentCreateOrConnectWithoutParentInput | CommentCreateOrConnectWithoutParentInput[]
     createMany?: CommentCreateManyParentInputEnvelope
     connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
+  export type EnumStatusFieldUpdateOperationsInput = {
+    set?: $Enums.Status
   }
 
   export type PostUpdatemediaInput = {
@@ -6024,11 +6071,28 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
+  export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
+  }
+
   export type PostCreateWithoutAuthorInput = {
     title: string
     content?: string | null
     published?: boolean
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -6041,7 +6105,7 @@ export namespace Prisma {
     title: string
     content?: string | null
     published?: boolean
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -6109,7 +6173,7 @@ export namespace Prisma {
     content?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
     authorId?: IntFilter<"Post"> | number
-    status?: StringFilter<"Post"> | string
+    status?: EnumStatusFilter<"Post"> | $Enums.Status
     media?: StringNullableListFilter<"Post">
     topics?: StringNullableListFilter<"Post">
     createdAt?: DateTimeFilter<"Post"> | Date | string
@@ -6279,7 +6343,7 @@ export namespace Prisma {
     title: string
     content?: string | null
     published?: boolean
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -6293,7 +6357,7 @@ export namespace Prisma {
     content?: string | null
     published?: boolean
     authorId: number
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -6354,7 +6418,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6368,7 +6432,7 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     authorId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6380,7 +6444,7 @@ export namespace Prisma {
     title: string
     content?: string | null
     published?: boolean
-    status?: string
+    status?: $Enums.Status
     media?: PostCreatemediaInput | string[]
     topics?: PostCreatetopicsInput | string[]
     createdAt?: Date | string
@@ -6399,7 +6463,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6412,7 +6476,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6425,7 +6489,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     media?: PostUpdatemediaInput | string[]
     topics?: PostUpdatetopicsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

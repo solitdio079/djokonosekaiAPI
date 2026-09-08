@@ -5,7 +5,10 @@ import express from "express";
 import routes from "./routes/index.js";
 import "./utils/passportJwt.js";
 import * as z from "zod";
+import { Brevo, BrevoError } from '@getbrevo/brevo';
 const app = express();
+
+app.use(express.static('public'));
 
 app.use("/auth", routes.auth);
 app.use("/posts", routes.post);
@@ -22,6 +25,14 @@ app.get("/", (req: Request, res: Response) => {
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof z.ZodError) {
     return res.status(500).json({ error: err.issues });
+  }
+  if (err instanceof Brevo.UnauthorizedError) {
+    console.error('Invalid API key');
+  } else if (err instanceof Brevo.TooManyRequestsError) {
+    const retryAfter = 60;
+    console.error(`Rate limited. Retry after ${retryAfter}s`);
+  } else if (err instanceof BrevoError) {
+    console.error(`API error ${err.statusCode}:`, err.message);
   }
   if (err) return res.status(500).json({ error: err.message });
 });
