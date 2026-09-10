@@ -11,7 +11,9 @@ import {
   validateUpdateUserData,
   validateUserRole,
   sendVerificationLink,
-  verifyUserEmailVerificationToken
+  verifyUserEmailVerificationToken,
+  validateUpdateUserPassword,
+  updateUserPassword
 } from "../controllers/user.js";
 
 const router = Router();
@@ -28,6 +30,7 @@ router.get("/:userId", getOneUser);
 router.get("/", verifyIfAdmin,getAllUsers);
 router.post("/verifyEmail/:userId", verifyUserEmailVerificationToken)
 router.put("/:userId", validateUpdateUserData,updateUser);
+router.patch("/password/:userId", validateUpdateUserPassword,updateUserPassword);
 router.put("/role/:userId", validateUserRole,verifyIfAdmin,updateRole);
 
 router.delete("/:userId", verifyIfAdmin,deleteUser);

@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import passport from "passport"
 import verifyIfAdmin from "../utils/verifyIfAdmin.js"
+import upload from "../utils/multerUpload.js"
 import {
   getAllPosts,
   getOnePost,
@@ -10,12 +11,16 @@ import {
   getPostComments,
   validatePost,
   validatePostStatus,
-  updateStatus
+  updateStatus,
+  uploadMedia
 } from "../controllers/post.js";
 
 import "../utils/passportJwt.js"
 
 const router = Router();
+
+
+router.post("/media", upload.array("media",4), uploadMedia)
 
 router.use(express.json());
 

@@ -13,6 +13,7 @@ AI agents working in this directory must:
 - Use questions, conceptual hints, and documentation references to help the developer reason independently.
 - Encourage the developer to inspect, test, and debug their own work.
 - Keep guidance focused and concise.
+- Can only create deployment related docker file
 
 ## Prohibited behavior
 

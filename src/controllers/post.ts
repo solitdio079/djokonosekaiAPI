@@ -32,6 +32,15 @@ interface postBody {
   topicString?: string;
 }
 
+ async function uploadMedia(req:Request, res:Response,next:NextFunction){
+  const files = req.files as Express.Multer.File[] | undefined;
+  if(!files) return res.status(403).json({error: "Please upload some files!"})
+
+  const media = files.map(item => item.filename)
+
+  return res.json({data:media})
+ }
+
 async function getAllPosts(req: Request, res: Response, next: NextFunction) {
   try {
     const posts = await prisma.post.findMany();
@@ -241,5 +250,6 @@ export {
   getPostComments,
   validatePost,
   validatePostStatus,
-  updateStatus
+  updateStatus,
+  uploadMedia
 };
